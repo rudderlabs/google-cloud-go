@@ -56,6 +56,8 @@ jobs:
         egress-policy: audit
 
     - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-    - run: |
+    - env:
+        MODS: ${{ matrix.mods }}
+      run: |
         cd internal/actions
-        go run ./internal/actions/cmd/thirdpartycheck -q --dir=${{ github.workspace }} -mod ${{ matrix.mods }}/go.mod
+        go run ./internal/actions/cmd/thirdpartycheck -q --dir=${{ github.workspace }} -mod "$MODS"/go.mod
