@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,6 +35,30 @@ func (it *DataAccessLabelIterator) All() iter.Seq2[*chroniclepb.DataAccessLabel,
 // All returns an iterator. If an error is returned by the iterator, the
 // iterator will stop after that iteration.
 func (it *DataAccessScopeIterator) All() iter.Seq2[*chroniclepb.DataAccessScope, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
+func (it *DataTableIterator) All() iter.Seq2[*chroniclepb.DataTable, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
+func (it *DataTableRowIterator) All() iter.Seq2[*chroniclepb.DataTableRow, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
+func (it *FeaturedContentNativeDashboardIterator) All() iter.Seq2[*chroniclepb.FeaturedContentNativeDashboard, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
+func (it *NativeDashboardIterator) All() iter.Seq2[*chroniclepb.NativeDashboard, error] {
 	return iterator.RangeAdapter(it.Next)
 }
 

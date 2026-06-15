@@ -78,6 +78,18 @@ func toProtoValue(v reflect.Value) (pbv *pb.Value, sawTransform bool, err error)
 		return &pb.Value{ValueType: &pb.Value_TimestampValue{TimestampValue: x}}, false, nil
 	case Vector32:
 		return vectorToProtoValue(x), false, nil
+	case Expression:
+		pbVal, err := exprToProtoValue(x)
+		return pbVal, false, err
+	case AggregateFunction:
+		if x == nil {
+			return nullValue, false, nil
+		}
+		if v := reflect.ValueOf(x); v.Kind() == reflect.Ptr && v.IsNil() {
+			return nullValue, false, nil
+		}
+		pbVal, err := x.toProto()
+		return pbVal, false, err
 	case Vector64:
 		return vectorToProtoValue(x), false, nil
 	case *latlng.LatLng:

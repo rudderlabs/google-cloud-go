@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,8 +22,6 @@
 // visibility into upcoming, ongoing, and completed maintenance, along with
 // controls to manage certain maintenance activities, such as maintenance
 // windows, rescheduling, and on-demand updates.
-//
-//	NOTE: This package is in beta. It is not stable, and may be subject to changes.
 //
 // # General documentation
 //

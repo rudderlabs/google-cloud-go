@@ -15,17 +15,12 @@ jobs:
   changed_gomods:
     runs-on: ubuntu-latest
     steps:
-    - name: Harden the runner (Audit all outbound calls)
-      uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
-      with:
-        egress-policy: audit
-
-    - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+    - uses: actions/checkout@v6
       with:
         fetch-depth: 2
-    - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
+    - uses: actions/setup-go@v6
       with:
-        go-version: 1.25.x
+        go-version: 1.26.x
     - name: Find modified go.mod files
       id: modfiles
       run: |
@@ -50,14 +45,9 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.changed_gomods.outputs.mods) }}
     steps:
-    - name: Harden the runner (Audit all outbound calls)
-      uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
-      with:
-        egress-policy: audit
-
-    - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-    - env:
-        MODS: ${{ matrix.mods }}
-      run: |
+    - uses: actions/checkout@v6
+    - run: |
         cd internal/actions
-        go run ./internal/actions/cmd/thirdpartycheck -q --dir=${{ github.workspace }} -mod "$MODS"/go.mod
+        go run ./internal/actions/cmd/thirdpartycheck -q --dir=${{ github.workspace }} -mod ${MATRIX_MODS}/go.mod
+      env:
+        MATRIX_MODS: ${{ matrix.mods }}

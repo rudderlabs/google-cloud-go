@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -231,6 +231,12 @@ func (it *HealthCheckServiceIterator) All() iter.Seq2[*computepb.HealthCheckServ
 
 // All returns an iterator. If an error is returned by the iterator, the
 // iterator will stop after that iteration.
+func (it *HealthCheckServicesScopedListPairIterator) All() iter.Seq2[HealthCheckServicesScopedListPair, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
 func (it *HealthChecksScopedListPairIterator) All() iter.Seq2[HealthChecksScopedListPair, error] {
 	return iterator.RangeAdapter(it.Next)
 }
@@ -321,6 +327,12 @@ func (it *InstancesScopedListPairIterator) All() iter.Seq2[InstancesScopedListPa
 
 // All returns an iterator. If an error is returned by the iterator, the
 // iterator will stop after that iteration.
+func (it *InstantSnapshotGroupIterator) All() iter.Seq2[*computepb.InstantSnapshotGroup, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
 func (it *InstantSnapshotIterator) All() iter.Seq2[*computepb.InstantSnapshot, error] {
 	return iterator.RangeAdapter(it.Next)
 }
@@ -406,6 +418,18 @@ func (it *ManagedInstanceIterator) All() iter.Seq2[*computepb.ManagedInstance, e
 // All returns an iterator. If an error is returned by the iterator, the
 // iterator will stop after that iteration.
 func (it *MultiMigIterator) All() iter.Seq2[*computepb.MultiMig, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
+func (it *MultiMigMemberIterator) All() iter.Seq2[*computepb.MultiMigMember, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
+func (it *NamedSetIterator) All() iter.Seq2[*computepb.NamedSet, error] {
 	return iterator.RangeAdapter(it.Next)
 }
 
@@ -519,6 +543,12 @@ func (it *NotificationEndpointIterator) All() iter.Seq2[*computepb.NotificationE
 
 // All returns an iterator. If an error is returned by the iterator, the
 // iterator will stop after that iteration.
+func (it *NotificationEndpointsScopedListPairIterator) All() iter.Seq2[NotificationEndpointsScopedListPair, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
 func (it *OperationIterator) All() iter.Seq2[*computepb.Operation, error] {
 	return iterator.RangeAdapter(it.Next)
 }
@@ -603,6 +633,12 @@ func (it *ReservationIterator) All() iter.Seq2[*computepb.Reservation, error] {
 
 // All returns an iterator. If an error is returned by the iterator, the
 // iterator will stop after that iteration.
+func (it *ReservationSlotIterator) All() iter.Seq2[*computepb.ReservationSlot, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
 func (it *ReservationSubBlockIterator) All() iter.Seq2[*computepb.ReservationSubBlock, error] {
 	return iterator.RangeAdapter(it.Next)
 }
@@ -682,6 +718,12 @@ func (it *ServiceAttachmentIterator) All() iter.Seq2[*computepb.ServiceAttachmen
 // All returns an iterator. If an error is returned by the iterator, the
 // iterator will stop after that iteration.
 func (it *ServiceAttachmentsScopedListPairIterator) All() iter.Seq2[ServiceAttachmentsScopedListPair, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
+func (it *SnapshotGroupIterator) All() iter.Seq2[*computepb.SnapshotGroup, error] {
 	return iterator.RangeAdapter(it.Next)
 }
 

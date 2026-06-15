@@ -1,6 +1,28 @@
 # Changes
 
 
+## [1.0.0](https://github.com/googleapis/google-cloud-go/releases/tag/ai%2Fv1.0.0) (2026-05-08)
+
+## [0.20.0](https://github.com/googleapis/google-cloud-go/releases/tag/ai%2Fv0.20.0) (2026-05-07)
+
+## [0.19.0](https://github.com/googleapis/google-cloud-go/releases/tag/ai%2Fv0.19.0) (2026-04-30)
+
+## [0.18.0](https://github.com/googleapis/google-cloud-go/releases/tag/ai%2Fv0.18.0) (2026-04-13)
+
+## [0.17.0](https://github.com/googleapis/google-cloud-go/releases/tag/ai%2Fv0.17.0) (2026-04-09)
+
+## [0.16.0](https://github.com/googleapis/google-cloud-go/releases/tag/ai%2Fv0.16.0) (2026-04-02)
+
+## [0.15.0](https://github.com/googleapis/google-cloud-go/releases/tag/ai%2Fv0.15.0) (2026-01-08)
+
+### Features
+
+* add IMAGE_RECITATION reason when generation is stopped due to recitation ([db65e79](https://github.com/googleapis/google-cloud-go/commit/db65e7927e54b21a39a54f685810495d2885cb33))
+* add json_name for GenerationConfig.response_json_schema_ordered field ([db65e79](https://github.com/googleapis/google-cloud-go/commit/db65e7927e54b21a39a54f685810495d2885cb33))
+* add support for GoogleMaps and FileSearch tools ([db65e79](https://github.com/googleapis/google-cloud-go/commit/db65e7927e54b21a39a54f685810495d2885cb33))
+* add support for GroundingMetadata.google_maps_widget_context_token ([db65e79](https://github.com/googleapis/google-cloud-go/commit/db65e7927e54b21a39a54f685810495d2885cb33))
+* add support for RetrievalConfig ([db65e79](https://github.com/googleapis/google-cloud-go/commit/db65e7927e54b21a39a54f685810495d2885cb33))
+
 ## [0.14.0](https://github.com/googleapis/google-cloud-go/releases/tag/ai%2Fv0.14.0) (2025-10-22)
 
 ### Features

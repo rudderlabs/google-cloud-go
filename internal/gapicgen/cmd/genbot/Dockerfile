@@ -1,7 +1,7 @@
-FROM golang:1.24-alpine@sha256:ef75fa8822a4c0fb53a390548b3dc1c39639339ec3373c58f5441117e1ff46ae as godist
+FROM golang:1.24-alpine as godist
 RUN go version
 
-FROM docker:25.0@sha256:b41d0183012e2334aacd4e0b8e339b89246c4fdb7eada6cc86b0355f41328549
+FROM docker:25.0
 
 # Log the version of Alpine in use.
 RUN cat /etc/alpine-release
@@ -27,11 +27,12 @@ ENV PATH /usr/local/go/bin:$PATH
 RUN go version
 
 # Install Go tools.
-RUN go install github.com/golang/protobuf/protoc-gen-go@v1.5.3 && \
+RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.11 && \
+    go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.3.0 && \
     go install golang.org/x/lint/golint@latest && \
-    go install golang.org/x/tools/cmd/goimports@latest && \
+    go install golang.org/x/tools/cmd/goimports@v0.44.0 && \
     go install honnef.co/go/tools/cmd/staticcheck@latest && \
-    go install github.com/googleapis/gapic-generator-go/cmd/protoc-gen-go_gapic@v0.38.0
+    go install github.com/googleapis/gapic-generator-go/cmd/protoc-gen-go_gapic@v0.61.0
 ENV PATH="${PATH}:/root/go/bin"
 
 # Source: http://debuggable.com/posts/disable-strict-host-checking-for-git-clone:49896ff3-0ac0-4263-9703-1eae4834cda3

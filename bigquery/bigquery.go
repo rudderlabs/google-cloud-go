@@ -33,6 +33,7 @@ import (
 	bq "google.golang.org/api/bigquery/v2"
 	"google.golang.org/api/googleapi"
 	"google.golang.org/api/option"
+	"google.golang.org/api/option/internaloption"
 )
 
 const (
@@ -83,6 +84,18 @@ func NewClient(ctx context.Context, projectID string, opts ...option.ClientOptio
 		option.WithScopes(Scope),
 		option.WithUserAgent(fmt.Sprintf("%s/%s", userAgentPrefix, internal.Version)),
 	}
+
+	if gax.IsFeatureEnabled("TRACING") {
+		o = append(o, internaloption.WithTelemetryAttributes(map[string]string{
+			"gcp.client.repo":     "googleapis/google-cloud-go",
+			"gcp.client.version":  internal.Version,
+			"gcp.client.service":  "bigquery.googleapis.com",
+			"gcp.client.artifact": "cloud.google.com/go/bigquery",
+			"gcp.client.language": "go",
+			"url.domain":          "bigquery.googleapis.com",
+		}))
+	}
+
 	o = append(o, opts...)
 	bqs, err := bq.NewService(ctx, o...)
 	if err != nil {
@@ -127,15 +140,6 @@ func (c *Client) isStorageReadAvailable() bool {
 	return c.rc != nil
 }
 
-// maxRetries returns the configured maximum number of retries for this client.
-// Returns 0 if no limit is configured (infinite retries until context cancellation).
-func (c *Client) maxRetries() int {
-	if c.customConfig == nil {
-		return 0
-	}
-	return c.customConfig.maxRetries
-}
-
 // Project returns the project ID or number for this instance of the client, which may have
 // either been explicitly specified or autodetected.
 func (c *Client) Project() string {
@@ -157,6 +161,7 @@ func (c *Client) Close() error {
 
 // Calls the Jobs.Insert RPC and returns a Job.
 func (c *Client) insertJob(ctx context.Context, job *bq.Job, media io.Reader, mediaOpts ...googleapi.MediaOption) (*Job, error) {
+	ctx = setProjectItemTraceMetadata(ctx, c.projectID, "jobs")
 	call := c.bqs.Jobs.Insert(c.projectID, job).Context(ctx)
 	setClientHeader(call.Header())
 	if media != nil {
@@ -177,8 +182,7 @@ func (c *Client) insertJob(ctx context.Context, job *bq.Job, media io.Reader, me
 	// TODO(jba): Look into retrying if media != nil.
 	if job.JobReference != nil && media == nil {
 		// We deviate from default retries due to BigQuery wanting to retry structured internal job errors.
-		// Use client's maxRetries configuration (0 = infinite retries for backward compatibility).
-		err = runWithRetryExplicitN(ctx, invoke, jobRetryReasons, c.maxRetries())
+		err = runWithRetryExplicit(ctx, invoke, jobRetryReasons)
 	} else {
 		err = invoke()
 	}
@@ -192,6 +196,7 @@ func (c *Client) insertJob(ctx context.Context, job *bq.Job, media io.Reader, me
 // Due to differences in options it supports, it cannot be used for all existing
 // jobs.insert requests that are query jobs.
 func (c *Client) runQuery(ctx context.Context, queryRequest *bq.QueryRequest) (*bq.QueryResponse, error) {
+	ctx = setProjectItemTraceMetadata(ctx, c.projectID, "queries")
 	call := c.bqs.Jobs.Query(c.projectID, queryRequest).Context(ctx)
 	setClientHeader(call.Header())
 
@@ -205,8 +210,7 @@ func (c *Client) runQuery(ctx context.Context, queryRequest *bq.QueryRequest) (*
 	}
 
 	// We control request ID, so we can always runWithRetry.
-	// Use client's maxRetries configuration (0 = infinite retries for backward compatibility).
-	err = runWithRetryExplicitN(ctx, invoke, jobRetryReasons, c.maxRetries())
+	err = runWithRetryExplicit(ctx, invoke, jobRetryReasons)
 	if err != nil {
 		return nil, err
 	}
@@ -232,17 +236,13 @@ func runWithRetry(ctx context.Context, call func() error) error {
 }
 
 func runWithRetryExplicit(ctx context.Context, call func() error, allowedReasons []string) error {
-	return runWithRetryExplicitN(ctx, call, allowedReasons, 0)
-}
-
-func runWithRetryExplicitN(ctx context.Context, call func() error, allowedReasons []string, maxRetries int) error {
 	// These parameters match the suggestions in https://cloud.google.com/bigquery/sla.
 	backoff := gax.Backoff{
 		Initial:    1 * time.Second,
 		Max:        32 * time.Second,
 		Multiplier: 2,
 	}
-	return cloudinternal.RetryN(ctx, backoff, maxRetries, func() (stop bool, err error) {
+	return cloudinternal.Retry(ctx, backoff, func() (stop bool, err error) {
 		err = call()
 		if err == nil {
 			return true, nil

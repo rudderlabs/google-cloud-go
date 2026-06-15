@@ -1,5 +1,25 @@
 # Changes
 
+## [1.24.0](https://github.com/googleapis/google-cloud-go/releases/tag/datastore%2Fv1.24.0) (2026-05-19)
+
+### Bug Fixes
+
+* add retries to emulator (#14591) ([d944830](https://github.com/googleapis/google-cloud-go/commit/d9448309a64e756a5facdfbd6ffa9d51f27c0610))
+* detach rollback context from transaction cancellation (#14602) ([0a8d10d](https://github.com/googleapis/google-cloud-go/commit/0a8d10d18d7e2b0008e82c5e2936f95e82bfbbc5))
+* fix context leak in Iterator and Transaction spans (#14478) ([78de20d](https://github.com/googleapis/google-cloud-go/commit/78de20dabebc4d7b98e429b4c5fb04aa7c90fb66))
+
+## [1.23.0](https://github.com/googleapis/google-cloud-go/releases/tag/datastore%2Fv1.23.0) (2026-04-27)
+
+## [1.22.0](https://github.com/googleapis/google-cloud-go/releases/tag/datastore%2Fv1.22.0) (2026-02-04)
+
+### Features
+
+* Enable new auth library (#13318) ([ea42700](https://github.com/googleapis/google-cloud-go/commit/ea4270000c158ad6b21ccc5b38c6b76e2218c037))
+
+### Bug Fixes
+
+* correct LoadKey documentation (#13375) ([106fc73](https://github.com/googleapis/google-cloud-go/commit/106fc737d0f7f7beb9984cc98b5978d23f9867ca))
+
 ## [1.21.0](https://github.com/googleapis/google-cloud-go/compare/datastore/v1.20.0...datastore/v1.21.0) (2025-10-20)
 
 

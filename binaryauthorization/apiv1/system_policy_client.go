@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import (
 
 	binaryauthorizationpb "cloud.google.com/go/binaryauthorization/apiv1/binaryauthorizationpb"
 	gax "github.com/googleapis/gax-go/v2"
+	"github.com/googleapis/gax-go/v2/callctx"
 	"google.golang.org/api/option"
 	"google.golang.org/api/option/internaloption"
 	gtransport "google.golang.org/api/transport/grpc"
@@ -90,7 +91,7 @@ type SystemPolicyClient struct {
 
 // Wrapper methods routed to the internal client.
 
-// Close closes the connection to the API service. The user should invoke this when
+// Close closes the connection to the API service. **Always** call Close() when
 // the client is no longer required.
 func (c *SystemPolicyClient) Close() error {
 	return c.internalClient.Close()
@@ -141,6 +142,16 @@ type systemPolicyGRPCClient struct {
 // API for working with the system policy.
 func NewSystemPolicyClient(ctx context.Context, opts ...option.ClientOption) (*SystemPolicyClient, error) {
 	clientOpts := defaultSystemPolicyGRPCClientOptions()
+	if gax.IsFeatureEnabled("TRACING") || gax.IsFeatureEnabled("LOGGING") {
+		clientOpts = append(clientOpts, internaloption.WithTelemetryAttributes(map[string]string{
+			"gcp.client.service":  "binaryauthorization",
+			"gcp.client.version":  getVersionClient(),
+			"gcp.client.repo":     "googleapis/google-cloud-go",
+			"gcp.client.artifact": "cloud.google.com/go/binaryauthorization/apiv1",
+			"gcp.client.language": "go",
+			"url.domain":          "binaryauthorization.googleapis.com",
+		}))
+	}
 	if newSystemPolicyClientHook != nil {
 		hookOpts, err := newSystemPolicyClientHook(ctx, clientHookParams{})
 		if err != nil {
@@ -162,6 +173,20 @@ func NewSystemPolicyClient(ctx context.Context, opts ...option.ClientOption) (*S
 		logger:             internaloption.GetLogger(opts),
 	}
 	c.setGoogleClientInfo()
+	if gax.IsFeatureEnabled("METRICS") {
+		metrics := gax.NewClientMetrics(
+			gax.WithTelemetryLogger(c.logger),
+			gax.WithTelemetryAttributes(map[string]string{
+				gax.ClientService:  "binaryauthorization",
+				gax.ClientVersion:  getVersionClient(),
+				gax.ClientArtifact: "cloud.google.com/go/binaryauthorization/apiv1",
+				gax.RPCSystem:      "grpc",
+				gax.URLDomain:      "binaryauthorization.googleapis.com",
+			}),
+		)
+
+		client.CallOptions.GetSystemPolicy = append(client.CallOptions.GetSystemPolicy, gax.WithClientMetrics(metrics))
+	}
 
 	client.internalClient = c
 
@@ -187,7 +212,7 @@ func (c *systemPolicyGRPCClient) setGoogleClientInfo(keyval ...string) {
 	}
 }
 
-// Close closes the connection to the API service. The user should invoke this when
+// Close closes the connection to the API service. **Always** call Close() when
 // the client is no longer required.
 func (c *systemPolicyGRPCClient) Close() error {
 	return c.connPool.Close()
@@ -215,6 +240,16 @@ type systemPolicyRESTClient struct {
 // API for working with the system policy.
 func NewSystemPolicyRESTClient(ctx context.Context, opts ...option.ClientOption) (*SystemPolicyClient, error) {
 	clientOpts := append(defaultSystemPolicyRESTClientOptions(), opts...)
+	if gax.IsFeatureEnabled("TRACING") || gax.IsFeatureEnabled("LOGGING") {
+		clientOpts = append(clientOpts, internaloption.WithTelemetryAttributes(map[string]string{
+			"gcp.client.service":  "binaryauthorization",
+			"gcp.client.version":  getVersionClient(),
+			"gcp.client.repo":     "googleapis/google-cloud-go",
+			"gcp.client.artifact": "cloud.google.com/go/binaryauthorization/apiv1",
+			"gcp.client.language": "go",
+			"url.domain":          "binaryauthorization.googleapis.com",
+		}))
+	}
 	httpClient, endpoint, err := httptransport.NewClient(ctx, clientOpts...)
 	if err != nil {
 		return nil, err
@@ -228,6 +263,21 @@ func NewSystemPolicyRESTClient(ctx context.Context, opts ...option.ClientOption)
 		logger:      internaloption.GetLogger(opts),
 	}
 	c.setGoogleClientInfo()
+
+	if gax.IsFeatureEnabled("METRICS") {
+		metrics := gax.NewClientMetrics(
+			gax.WithTelemetryLogger(c.logger),
+			gax.WithTelemetryAttributes(map[string]string{
+				gax.ClientService:  "binaryauthorization",
+				gax.ClientVersion:  getVersionClient(),
+				gax.ClientArtifact: "cloud.google.com/go/binaryauthorization/apiv1",
+				gax.RPCSystem:      "http",
+				gax.URLDomain:      "binaryauthorization.googleapis.com",
+			}),
+		)
+
+		callOpts.GetSystemPolicy = append(callOpts.GetSystemPolicy, gax.WithClientMetrics(metrics))
+	}
 
 	return &SystemPolicyClient{internalClient: c, CallOptions: callOpts}, nil
 }
@@ -255,7 +305,7 @@ func (c *systemPolicyRESTClient) setGoogleClientInfo(keyval ...string) {
 	}
 }
 
-// Close closes the connection to the API service. The user should invoke this when
+// Close closes the connection to the API service. **Always** call Close() when
 // the client is no longer required.
 func (c *systemPolicyRESTClient) Close() error {
 	// Replace httpClient with nil to force cleanup.
@@ -274,6 +324,12 @@ func (c *systemPolicyGRPCClient) GetSystemPolicy(ctx context.Context, req *binar
 
 	hds = append(c.xGoogHeaders, hds...)
 	ctx = gax.InsertMetadataIntoOutgoingContext(ctx, hds...)
+	if gax.IsFeatureEnabled("TRACING") || gax.IsFeatureEnabled("LOGGING") {
+		ctx = callctx.WithTelemetryContext(ctx, "resource_name", fmt.Sprintf("//binaryauthorization.googleapis.com/%v", req.GetName()))
+	}
+	if gax.IsFeatureEnabled("METRICS") || gax.IsFeatureEnabled("TRACING") || gax.IsFeatureEnabled("LOGGING") {
+		ctx = callctx.WithTelemetryContext(ctx, "rpc_method", "google.cloud.binaryauthorization.v1.SystemPolicyV1/GetSystemPolicy")
+	}
 	opts = append((*c.CallOptions).GetSystemPolicy[0:len((*c.CallOptions).GetSystemPolicy):len((*c.CallOptions).GetSystemPolicy)], opts...)
 	var resp *binaryauthorizationpb.Policy
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
@@ -306,6 +362,13 @@ func (c *systemPolicyRESTClient) GetSystemPolicy(ctx context.Context, req *binar
 	hds = append(c.xGoogHeaders, hds...)
 	hds = append(hds, "Content-Type", "application/json")
 	headers := gax.BuildHeaders(ctx, hds...)
+	if gax.IsFeatureEnabled("TRACING") || gax.IsFeatureEnabled("LOGGING") {
+		ctx = callctx.WithTelemetryContext(ctx, "resource_name", fmt.Sprintf("//binaryauthorization.googleapis.com/%v", req.GetName()))
+	}
+	if gax.IsFeatureEnabled("METRICS") || gax.IsFeatureEnabled("TRACING") || gax.IsFeatureEnabled("LOGGING") {
+		ctx = callctx.WithTelemetryContext(ctx, "rpc_method", "google.cloud.binaryauthorization.v1.SystemPolicyV1/GetSystemPolicy")
+		ctx = callctx.WithTelemetryContext(ctx, "url_template", "/v1/{name=locations/*/policy}")
+	}
 	opts = append((*c.CallOptions).GetSystemPolicy[0:len((*c.CallOptions).GetSystemPolicy):len((*c.CallOptions).GetSystemPolicy)], opts...)
 	unm := protojson.UnmarshalOptions{AllowPartial: true, DiscardUnknown: true}
 	resp := &binaryauthorizationpb.Policy{}

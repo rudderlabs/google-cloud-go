@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math"
 	"net/url"
 	"os"
 	"strings"
@@ -47,7 +48,7 @@ const resourcePrefixHeader = "google-cloud-resource-prefix"
 // requestParamsHeader is routing header required to access named databases
 const reqParamsHeader = "x-goog-request-params"
 
-// reqParamsHeaderVal constructs header from dbPath
+// reqParamsHeaderVal constructs header from dbPath.
 // dbPath is of the form projects/{project_id}/databases/{database_id}
 func reqParamsHeaderVal(dbPath string) string {
 	splitPath := strings.Split(dbPath, "/")
@@ -70,11 +71,22 @@ const DefaultDatabaseID = "(default)"
 
 // A Client provides access to the Firestore service.
 type Client struct {
-	c            *vkit.Client
-	projectID    string
-	databaseID   string        // A client is tied to a single database.
-	readSettings *readSettings // readSettings allows setting a snapshot time to read the database
-	UsesEmulator bool          // a boolean that indicates if the client is using the emulator
+	c                        *vkit.Client
+	projectID                string
+	databaseID               string        // A client is tied to a single database.
+	readSettings             *readSettings // readSettings allows setting a snapshot time to read the database
+	UsesEmulator             bool          // a boolean that indicates if the client is using the emulator
+	alwaysUseImplicitOrderBy bool          // configuration flag to always append implicit OrderBy clauses
+}
+
+func normalizeEmulatorAddress(addr string) string {
+	// Strip legacy schemes and force passthrough for performance.
+	if strings.HasPrefix(addr, "http://") || strings.HasPrefix(addr, "https://") || !strings.Contains(addr, "://") {
+		addr = strings.TrimPrefix(addr, "http://")
+		addr = strings.TrimPrefix(addr, "https://")
+		addr = "passthrough:///" + addr
+	}
+	return addr
 }
 
 // newClient creates a new Firestore client, using the given createClient function to create the underlying client.
@@ -90,7 +102,16 @@ func newClient(ctx context.Context, projectID string, createClient func(ctx cont
 			return nil, fmt.Errorf("firestore: emulator is not supported for this client type")
 		}
 
-		conn, err := grpc.Dial(addr, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithPerRPCCredentials(emulatorCreds{}))
+		addr = normalizeEmulatorAddress(addr)
+		conn, err := grpc.Dial(addr,
+			grpc.WithTransportCredentials(insecure.NewCredentials()),
+			grpc.WithPerRPCCredentials(emulatorCreds{}),
+			grpc.WithDefaultCallOptions(
+				grpc.MaxCallRecvMsgSize(math.MaxInt32),
+				grpc.MaxCallSendMsgSize(math.MaxInt32),
+			),
+		)
+
 		if err != nil {
 			return nil, fmt.Errorf("firestore: dialing address from env var FIRESTORE_EMULATOR_HOST: %s", err)
 		}
@@ -99,6 +120,13 @@ func newClient(ctx context.Context, projectID string, createClient func(ctx cont
 		projectID, _ = detect.ProjectID(ctx, projectID, "", opts...)
 		if projectID == "" {
 			projectID = "dummy-emulator-firestore-project"
+		}
+	} else {
+		o = []option.ClientOption{
+			option.WithGRPCDialOption(grpc.WithDefaultCallOptions(
+				grpc.MaxCallRecvMsgSize(math.MaxInt32),
+				grpc.MaxCallSendMsgSize(math.MaxInt32),
+			)),
 		}
 	}
 	o = append(o, opts...)
@@ -179,6 +207,11 @@ func withRequestParamsHeader(ctx context.Context, requestParams string) context.
 	md = md.Copy()
 	md[reqParamsHeader] = []string{requestParams}
 	return metadata.NewOutgoingContext(ctx, md)
+}
+
+// Pipeline creates a PipelineSource to start building a Firestore pipeline.
+func (c *Client) Pipeline() *PipelineSource {
+	return &PipelineSource{client: c}
 }
 
 // Collection creates a reference to a collection with the given path.
@@ -408,6 +441,18 @@ func (c *Client) WithReadOptions(opts ...ReadOption) *Client {
 	for _, ro := range opts {
 		ro.apply(c.readSettings)
 	}
+	return c
+}
+
+// WithAlwaysUseImplicitOrderBy configures the default behavior for queries.
+// If enabled, queries will automatically inject an OrderBy clause for the
+// Document ID (`__name__`) if one is not explicitly provided. In addition,
+// it will automatically inject OrderBy clauses for any inequality filters
+// (e.g. >, <, !=) present in the query if they are missing from the explicit
+// orders. This ensures strictly deterministic query results and is especially
+// useful when executing backwards pagination (e.g. limitToLast) without cursors.
+func (c *Client) WithAlwaysUseImplicitOrderBy(b bool) *Client {
+	c.alwaysUseImplicitOrderBy = b
 	return c
 }
 
