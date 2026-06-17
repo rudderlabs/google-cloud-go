@@ -1,5 +1,5 @@
 # Default owner for all directories not owned by others
-# The cloud-sdk-go-team team are the effective repo maintainers, but automatic
+# The profiles team are the effective repo maintainers, but automatic
 # generation/releasing PRs are in the purview of the librarian team.
 *    @rudderlabs/infra @kuldeep0020 @nishantsharma @chandumlg
 
