@@ -2,6 +2,68 @@
 
 
 
+## [1.36.0](https://github.com/googleapis/google-cloud-go/releases/tag/maps%2Fv1.36.0) (2026-05-28)
+
+### Features
+
+* update API sources and regenerate (#14661) ([d0cd917](https://github.com/googleapis/google-cloud-go/commit/d0cd917ce0ad46a4d2c1cd4ea2ef8efa60b591d3))
+
+### Documentation
+
+* correct the samples (#14632) ([7988942](https://github.com/googleapis/google-cloud-go/commit/7988942ceb456a93a5ca43dc2fde7320bde093bc))
+
+## [1.35.0](https://github.com/googleapis/google-cloud-go/releases/tag/maps%2Fv1.35.0) (2026-05-07)
+
+## [1.34.0](https://github.com/googleapis/google-cloud-go/releases/tag/maps%2Fv1.34.0) (2026-04-30)
+
+## [1.33.0](https://github.com/googleapis/google-cloud-go/releases/tag/maps%2Fv1.33.0) (2026-04-13)
+
+## [1.32.0](https://github.com/googleapis/google-cloud-go/releases/tag/maps%2Fv1.32.0) (2026-04-09)
+
+## [1.31.0](https://github.com/googleapis/google-cloud-go/releases/tag/maps%2Fv1.31.0) (2026-04-02)
+
+## [1.30.0](https://github.com/googleapis/google-cloud-go/releases/tag/maps%2Fv1.30.0) (2026-03-26)
+
+### Features
+
+* add a new `include_future_opening_businesses` flag to Nearby Search, Text Search, and AutocompletPlaces. When true, businesses opening in the future are included in the results. ([5e50d57](https://github.com/googleapis/google-cloud-go/commit/5e50d57d4ca4bceff2e7dfe4118c281c24375b99))
+* add a new business status `FUTURE_OPENING` for places, along with an `opening_date` field to indicate when the establishment will open in the future ([5e50d57](https://github.com/googleapis/google-cloud-go/commit/5e50d57d4ca4bceff2e7dfe4118c281c24375b99))
+
+## [1.29.0](https://github.com/googleapis/google-cloud-go/releases/tag/maps%2Fv1.29.0) (2026-03-12)
+
+### Features
+
+* add a new Waypoint source to accept a token that identifies a Navigation Point obtained from the `SearchDestinations` method of the Geocoding API ([177550d](https://github.com/googleapis/google-cloud-go/commit/177550d454fe98dcd1cd6645bf9b4c51eef7a419))
+* upgrade protobuf from v25.7 to v31.0 ([177550d](https://github.com/googleapis/google-cloud-go/commit/177550d454fe98dcd1cd6645bf9b4c51eef7a419))
+
+### Documentation
+
+* regenerated documentation for fields ([177550d](https://github.com/googleapis/google-cloud-go/commit/177550d454fe98dcd1cd6645bf9b4c51eef7a419))
+
+## [1.28.0](https://github.com/googleapis/google-cloud-go/releases/tag/maps%2Fv1.28.0) (2026-02-19)
+
+### Features
+
+* Add `googleMapsLinks` field for links to different actions on Google Maps ([d3eb851](https://github.com/googleapis/google-cloud-go/commit/d3eb851d1b09f28ae2b6c7c63d694eb67b0c11c7))
+* Add `googleMapsTypeLabel` field to show type information on Google Maps ([d3eb851](https://github.com/googleapis/google-cloud-go/commit/d3eb851d1b09f28ae2b6c7c63d694eb67b0c11c7))
+
+### Bug Fixes
+
+* An existing field `references` is removed from message `.google.maps.places.v1.ContentBlock` ([d3eb851](https://github.com/googleapis/google-cloud-go/commit/d3eb851d1b09f28ae2b6c7c63d694eb67b0c11c7))
+* An existing field `topic` is removed from message `.google.maps.places.v1.ContentBlock` ([d3eb851](https://github.com/googleapis/google-cloud-go/commit/d3eb851d1b09f28ae2b6c7c63d694eb67b0c11c7))
+
+### Documentation
+
+* A comment for field `photos` in message `.google.maps.places.v1.ContextualContent` is changed ([d3eb851](https://github.com/googleapis/google-cloud-go/commit/d3eb851d1b09f28ae2b6c7c63d694eb67b0c11c7))
+* A comment for field `reviews` in message `.google.maps.places.v1.ContextualContent` is changed ([d3eb851](https://github.com/googleapis/google-cloud-go/commit/d3eb851d1b09f28ae2b6c7c63d694eb67b0c11c7))
+
+## [1.27.0](https://github.com/googleapis/google-cloud-go/releases/tag/maps%2Fv1.27.0) (2026-02-12)
+
+### Documentation
+
+* Add pre-GA details for Experiments enum ([6f31019](https://github.com/googleapis/google-cloud-go/commit/6f310199e136b133bb4fadaa353e264e809db6d7))
+* Add satellite imagery to `rgb_url` description ([6f31019](https://github.com/googleapis/google-cloud-go/commit/6f310199e136b133bb4fadaa353e264e809db6d7))
+
 ## [1.26.0](https://github.com/googleapis/google-cloud-go/releases/tag/maps%2Fv1.26.0) (2025-11-06)
 
 ### Features

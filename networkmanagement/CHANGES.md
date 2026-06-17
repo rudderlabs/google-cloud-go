@@ -1,5 +1,27 @@
 # Changes
 
+## [1.28.0](https://github.com/googleapis/google-cloud-go/releases/tag/networkmanagement%2Fv1.28.0) (2026-05-07)
+
+## [1.27.0](https://github.com/googleapis/google-cloud-go/releases/tag/networkmanagement%2Fv1.27.0) (2026-04-30)
+
+## [1.26.0](https://github.com/googleapis/google-cloud-go/releases/tag/networkmanagement%2Fv1.26.0) (2026-04-13)
+
+## [1.25.0](https://github.com/googleapis/google-cloud-go/releases/tag/networkmanagement%2Fv1.25.0) (2026-04-09)
+
+## [1.24.0](https://github.com/googleapis/google-cloud-go/releases/tag/networkmanagement%2Fv1.24.0) (2026-04-02)
+
+## [1.23.0](https://github.com/googleapis/google-cloud-go/releases/tag/networkmanagement%2Fv1.23.0) (2026-03-05)
+
+### Features
+
+* Add API fields related to GKE Pods and Network Policies ([9c80b8b](https://github.com/googleapis/google-cloud-go/commit/9c80b8b4442a54c610826c1bb89cec5158b49314))
+
+## [1.22.0](https://github.com/googleapis/google-cloud-go/releases/tag/networkmanagement%2Fv1.22.0) (2026-01-29)
+
+### Features
+
+* add fields and messages for GKE Pods and IP masquerading ([d8ea738](https://github.com/googleapis/google-cloud-go/commit/d8ea738a6e8f0603593d686a44331e7e0a572c27))
+
 ## [1.21.0](https://github.com/googleapis/google-cloud-go/releases/tag/networkmanagement%2Fv1.21.0) (2025-11-06)
 
 ### Features

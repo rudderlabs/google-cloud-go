@@ -1,5 +1,38 @@
 # Changes
 
+## [1.1.0](https://github.com/googleapis/google-cloud-go/releases/tag/chat%2Fv1.1.0) (2026-05-14)
+
+### Features
+
+* update API sources and regenerate (#14581) ([df96b2e](https://github.com/googleapis/google-cloud-go/commit/df96b2ecb3930d6fb2e6e542e11521ee8e9d5935))
+
+## [1.0.0](https://github.com/googleapis/google-cloud-go/releases/tag/chat%2Fv1.0.0) (2026-05-08)
+
+## [0.23.0](https://github.com/googleapis/google-cloud-go/releases/tag/chat%2Fv0.23.0) (2026-05-07)
+
+### Features
+
+* update API sources and regenerate (#14537) ([07fe29b](https://github.com/googleapis/google-cloud-go/commit/07fe29ba4c5069d27d4149d8fa5f8814eb8789d7))
+
+## [0.22.0](https://github.com/googleapis/google-cloud-go/releases/tag/chat%2Fv0.22.0) (2026-04-30)
+
+## [0.21.0](https://github.com/googleapis/google-cloud-go/releases/tag/chat%2Fv0.21.0) (2026-04-13)
+
+## [0.20.0](https://github.com/googleapis/google-cloud-go/releases/tag/chat%2Fv0.20.0) (2026-04-09)
+
+## [0.19.0](https://github.com/googleapis/google-cloud-go/releases/tag/chat%2Fv0.19.0) (2026-04-02)
+
+## [0.18.0](https://github.com/googleapis/google-cloud-go/releases/tag/chat%2Fv0.18.0) (2026-02-05)
+
+### Features
+
+* Addition of QuoteType enum, QuotedMessageSnapshot &amp; ForwardMetadata in the QuotedMessageMetadata proto ([611f239](https://github.com/googleapis/google-cloud-go/commit/611f239219225fb03f6475c7238f497a349961e2))
+
+### Documentation
+
+* another bulk typo correction (#13527) ([90a4f21](https://github.com/googleapis/google-cloud-go/commit/90a4f21fc7c19aec71e92dfa9b810bad9544a7c0))
+* fix typo in README.md entries (#13526) ([ac32b85](https://github.com/googleapis/google-cloud-go/commit/ac32b85197bf5b33aeb3af1ac69b752dff7a8a57))
+
 ## [0.17.0](https://github.com/googleapis/google-cloud-go/releases/tag/chat%2Fv0.17.0) (2025-12-18)
 
 ### Features

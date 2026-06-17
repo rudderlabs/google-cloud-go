@@ -100,14 +100,41 @@ func newBigtableClientMonitoredResource(ctx context.Context, project, appProfile
 
 	smr.clientProject = getAttribute(s, "cloud.account.id", unKnownAtttr)
 	smr.cloudPlatform = getAttribute(s, "cloud.platform", unKnownAtttr)
-	smr.hostName = getAttribute(s, "host.name", unKnownAtttr)
+
+	smr.hostName = getAttribute(s, "host.name", "")
+	// See https://opentelemetry.io/docs/specs/semconv/resource/k8s/#pod
+	if smr.hostName == "" {
+		smr.hostName = getAttribute(s, "k8s.pod.name", "")
+	}
+	// Fallback https://opentelemetry.io/docs/specs/semconv/resource/k8s/#pod
+	if smr.hostName == "" {
+		// Fallback to Node name if pod name is missing, add unknown
+		smr.hostName = getAttribute(s, "k8s.node.name", unKnownAtttr)
+	}
+
 	smr.hostID = getAttribute(s, "host.id", unKnownAtttr)
 	if smr.hostID == "unknown" {
 		// cloud run / cloud functions have faas.id instead of host.id
 
 		smr.hostID = getAttribute(s, "faas.id", unKnownAtttr)
 	}
-	smr.region = getAttribute(s, "cloud.region", "global")
+
+	// See https://opentelemetry.io/docs/specs/semconv/resource/cloud/
+	smr.region = getAttribute(s, "cloud.region", "")
+	if smr.region == "" {
+		zone := getAttribute(s, "cloud.availability_zone", "")
+		if zone != "" && zone != unKnownAtttr {
+			// handle for only gce zones.
+			if lastDash := strings.LastIndex(zone, "-"); lastDash > 0 {
+				smr.region = zone[:lastDash]
+			}
+		}
+	}
+
+	if smr.region == "" {
+		smr.region = "global"
+	}
+
 	smr.resource, err = resource.New(ctx, resource.WithAttributes([]attribute.KeyValue{
 		{Key: "gcp.resource_type", Value: attribute.StringValue(bigtableClientMonitoredResourceName)},
 		{Key: "project_id", Value: attribute.StringValue(project)},
@@ -197,6 +224,10 @@ func newOtelMetricsContext(ctx context.Context, cfg metricsConfig) (*otelMetrics
 			"grpc.lb.rls.failed_picks",
 			"grpc.xds_client.server_failure",
 			"grpc.xds_client.resource_updates_invalid",
+			"grpc.subchannel.open_connections",
+			"grpc.subchannel.disconnections",
+			"grpc.subchannel.connection_attempts_succeeded",
+			"grpc.subchannel.connection_attempts_failed",
 		),
 		OptionalLabels: []string{"grpc.lb.locality"},
 	}

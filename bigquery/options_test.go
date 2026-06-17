@@ -31,7 +31,6 @@ func TestCustomClientOptions(t *testing.T) {
 			desc: "no options",
 			want: &customClientConfig{
 				jobCreationMode: "",
-				maxRetries:      0,
 			},
 		},
 		{
@@ -41,7 +40,6 @@ func TestCustomClientOptions(t *testing.T) {
 			},
 			want: &customClientConfig{
 				jobCreationMode: JobCreationModeRequired,
-				maxRetries:      0,
 			},
 		},
 		{
@@ -51,38 +49,6 @@ func TestCustomClientOptions(t *testing.T) {
 			},
 			want: &customClientConfig{
 				jobCreationMode: JobCreationModeOptional,
-				maxRetries:      0,
-			},
-		},
-		{
-			desc: "maxRetries set",
-			options: []option.ClientOption{
-				WithMaxRetries(5),
-			},
-			want: &customClientConfig{
-				jobCreationMode: "",
-				maxRetries:      5,
-			},
-		},
-		{
-			desc: "maxRetries with jobmode",
-			options: []option.ClientOption{
-				WithDefaultJobCreationMode(JobCreationModeOptional),
-				WithMaxRetries(10),
-			},
-			want: &customClientConfig{
-				jobCreationMode: JobCreationModeOptional,
-				maxRetries:      10,
-			},
-		},
-		{
-			desc: "maxRetries zero (default behavior)",
-			options: []option.ClientOption{
-				WithMaxRetries(0),
-			},
-			want: &customClientConfig{
-				jobCreationMode: "",
-				maxRetries:      0,
 			},
 		},
 	}

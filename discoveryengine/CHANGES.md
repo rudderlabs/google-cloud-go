@@ -2,6 +2,43 @@
 
 
 
+## [1.29.0](https://github.com/googleapis/google-cloud-go/releases/tag/discoveryengine%2Fv1.29.0) (2026-05-07)
+
+### Features
+
+* update API sources and regenerate (#14537) ([07fe29b](https://github.com/googleapis/google-cloud-go/commit/07fe29ba4c5069d27d4149d8fa5f8814eb8789d7))
+
+## [1.28.0](https://github.com/googleapis/google-cloud-go/releases/tag/discoveryengine%2Fv1.28.0) (2026-04-30)
+
+## [1.27.0](https://github.com/googleapis/google-cloud-go/releases/tag/discoveryengine%2Fv1.27.0) (2026-04-13)
+
+## [1.26.0](https://github.com/googleapis/google-cloud-go/releases/tag/discoveryengine%2Fv1.26.0) (2026-04-09)
+
+## [1.25.0](https://github.com/googleapis/google-cloud-go/releases/tag/discoveryengine%2Fv1.25.0) (2026-04-02)
+
+## [1.24.0](https://github.com/googleapis/google-cloud-go/releases/tag/discoveryengine%2Fv1.24.0) (2026-03-26)
+
+### Features
+
+* Update DataStoreSpec and add BoostSpec to SearchService ([5e50d57](https://github.com/googleapis/google-cloud-go/commit/5e50d57d4ca4bceff2e7dfe4118c281c24375b99))
+
+### Documentation
+
+* Clarify project number requirement for data_store field ([5e50d57](https://github.com/googleapis/google-cloud-go/commit/5e50d57d4ca4bceff2e7dfe4118c281c24375b99))
+
+## [1.23.0](https://github.com/googleapis/google-cloud-go/releases/tag/discoveryengine%2Fv1.23.0) (2026-02-12)
+
+### Features
+
+* add CrowdingSpec to SearchRequest to set crowding settings ([6f31019](https://github.com/googleapis/google-cloud-go/commit/6f310199e136b133bb4fadaa353e264e809db6d7))
+* add Natural Language Query Understanding fields and messages to DiscoveryEngine request, response, and datastore messages ([6f31019](https://github.com/googleapis/google-cloud-go/commit/6f310199e136b133bb4fadaa353e264e809db6d7))
+* add output-only field SemanticState to SearchResponse. ([6f31019](https://github.com/googleapis/google-cloud-go/commit/6f310199e136b133bb4fadaa353e264e809db6d7))
+
+### Documentation
+
+* other misc documentation updates Clients can specify Natural Language Query Understanding-related fields, as well as CrowdingSpec. These features are available in the V1 APIs. ([6f31019](https://github.com/googleapis/google-cloud-go/commit/6f310199e136b133bb4fadaa353e264e809db6d7))
+* update documentation for search and data store NLQ features ([6f31019](https://github.com/googleapis/google-cloud-go/commit/6f310199e136b133bb4fadaa353e264e809db6d7))
+
 ## [1.22.0](https://github.com/googleapis/google-cloud-go/releases/tag/discoveryengine%2Fv1.22.0) (2025-10-22)
 
 ### Bug Fixes

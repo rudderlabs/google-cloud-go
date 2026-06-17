@@ -1,5 +1,39 @@
 # Changes
 
+## [1.36.0](https://github.com/googleapis/google-cloud-go/releases/tag/dlp%2Fv1.36.0) (2026-06-11)
+
+### Features
+
+* update API sources and regenerate (#19950) ([c7607be](https://github.com/googleapis/google-cloud-go/commit/c7607be52757b803df345670b5d0621c2bb9ba30))
+
+## [1.35.0](https://github.com/googleapis/google-cloud-go/releases/tag/dlp%2Fv1.35.0) (2026-06-04)
+
+### Features
+
+* update API sources and regenerate (#14701) ([a9b7921](https://github.com/googleapis/google-cloud-go/commit/a9b7921551e9c1535496731da53e880e9e364efa))
+
+## [1.34.0](https://github.com/googleapis/google-cloud-go/releases/tag/dlp%2Fv1.34.0) (2026-05-07)
+
+## [1.33.0](https://github.com/googleapis/google-cloud-go/releases/tag/dlp%2Fv1.33.0) (2026-04-30)
+
+## [1.32.0](https://github.com/googleapis/google-cloud-go/releases/tag/dlp%2Fv1.32.0) (2026-04-13)
+
+## [1.31.0](https://github.com/googleapis/google-cloud-go/releases/tag/dlp%2Fv1.31.0) (2026-04-09)
+
+## [1.30.0](https://github.com/googleapis/google-cloud-go/releases/tag/dlp%2Fv1.30.0) (2026-04-02)
+
+## [1.29.0](https://github.com/googleapis/google-cloud-go/releases/tag/dlp%2Fv1.29.0) (2026-03-26)
+
+### Features
+
+* add InfoType launch status in InfoType Description ([5e50d57](https://github.com/googleapis/google-cloud-go/commit/5e50d57d4ca4bceff2e7dfe4118c281c24375b99))
+* added support for detecting key-value pairs in document metadata ([5e50d57](https://github.com/googleapis/google-cloud-go/commit/5e50d57d4ca4bceff2e7dfe4118c281c24375b99))
+* added support for image exclusion and adjustment rules ([5e50d57](https://github.com/googleapis/google-cloud-go/commit/5e50d57d4ca4bceff2e7dfe4118c281c24375b99))
+
+### Documentation
+
+* added formatting to various comments ([5e50d57](https://github.com/googleapis/google-cloud-go/commit/5e50d57d4ca4bceff2e7dfe4118c281c24375b99))
+
 ## [1.28.0](https://github.com/googleapis/google-cloud-go/releases/tag/dlp%2Fv1.28.0) (2025-12-18)
 
 ### Documentation

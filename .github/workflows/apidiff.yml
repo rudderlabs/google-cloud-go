@@ -13,21 +13,16 @@ jobs:
   scan_changes:
     runs-on: ubuntu-latest
     steps:
-    - name: Harden the runner (Audit all outbound calls)
-      uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
-      with:
-        egress-policy: audit
-
-    - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+    - uses: actions/checkout@v6
       with:
         ref: main
     - name: Get main commit
       id: main
-      run: echo "hash=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-    - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-    - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
+      run: echo "hash=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+    - uses: actions/checkout@v6
+    - uses: actions/setup-go@v6
       with:
-        go-version: '1.25.x'
+        go-version: '1.26.x'
     - name: Get changed directories
       id: changed_dirs
       # Ignore changes to the internal and root directories.
@@ -36,12 +31,12 @@ jobs:
         dirs=$(cd internal/actions; go run ./cmd/changefinder -q --diff-filter=a --dir=${{ github.workspace }})
         if [ -z "$dirs" ]
         then
-          echo "skip=1" >> $GITHUB_OUTPUT
+          echo "skip=1" >> "$GITHUB_OUTPUT"
           echo "No changes worth diffing!"
         else
           for d in $dirs; do list=${list},\"${d}\"; done
-          echo "changed={\"changed\":[${list#,}]}" >> $GITHUB_OUTPUT
-          echo "skip=" >> $GITHUB_OUTPUT
+          echo "changed={\"changed\":[${list#,}]}" >> "$GITHUB_OUTPUT"
+          echo "skip=" >> "$GITHUB_OUTPUT"
         fi
     outputs:
       changed_dirs: ${{ steps.changed_dirs.outputs.changed }}
@@ -57,38 +52,35 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.scan_changes.outputs.changed_dirs) }}
     steps:
-    - name: Harden the runner (Audit all outbound calls)
-      uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+    - uses: actions/setup-go@v6
       with:
-        egress-policy: audit
-
-    - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
-      with:
-        go-version: '1.25.x'
+        go-version: '1.26.x'
     - name: Install latest apidiff
       run: go install golang.org/x/exp/cmd/apidiff@latest
-    - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+    - uses: actions/checkout@v6
       with:
         ref: main
     - name: Create baseline
       id: baseline
-      env:
-        CHANGED: ${{ matrix.changed }}
       run: |
-        echo pkg="${CHANGED//\//_}_pkg.main" >> $GITHUB_OUTPUT
-    - name: Create Go package baseline
+        export CHANGED=${MATRIX_CHANGED}
+        echo pkg="${CHANGED//\//_}_pkg.main" >> "$GITHUB_OUTPUT"
       env:
-        CHANGED: ${{ matrix.changed }}
-      run: cd "$CHANGED" && apidiff -m -w ${{ steps.baseline.outputs.pkg }} .
+        MATRIX_CHANGED: ${{ matrix.changed }}
+    - name: Create Go package baseline
+      run: cd ${MATRIX_CHANGED} && apidiff -m -w ${STEPS_BASELINE_OUTPUTS_PKG} .
+      env:
+        MATRIX_CHANGED: ${{ matrix.changed }}
+        STEPS_BASELINE_OUTPUTS_PKG: ${{ steps.baseline.outputs.pkg }}
     - name: Upload baseline package data
-      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      uses: actions/upload-artifact@v7
       with:
         name: ${{ steps.baseline.outputs.pkg }}
         path: ${{ matrix.changed }}/${{ steps.baseline.outputs.pkg }}
         retention-days: 1
-    - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+    - uses: actions/checkout@v6
     - name: Download baseline package data
-      uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+      uses: actions/download-artifact@v8
       with:
         name: ${{ steps.baseline.outputs.pkg }}
         path: ${{ matrix.changed }}
@@ -101,18 +93,19 @@ jobs:
       # as it is likely a new method added to the gRPC client stub interface, which is non-breaking.
       env:
         PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
-        CHANGED: ${{ matrix.changed }}
+        MATRIX_CHANGED: ${{ matrix.changed }}
+        STEPS_BASELINE_OUTPUTS_PKG: ${{ steps.baseline.outputs.pkg }}
       run: |
-        cd "$CHANGED"
-        apidiff -m -incompatible ${{ steps.baseline.outputs.pkg }} . > diff.txt
+        cd ${MATRIX_CHANGED}
+        apidiff -m -incompatible ${STEPS_BASELINE_OUTPUTS_PKG} . > diff.txt
         if [[ "$PR_HEAD_REF" == librarian-* ]]; then
           sed -i '/: added/d' ./diff.txt
         fi
         cat diff.txt
         if [ -s diff.txt ]; then
-          echo "breaking_change_found=true" >> $GITHUB_OUTPUT
+          echo "breaking_change_found=true" >> "$GITHUB_OUTPUT"
         else
-          echo "breaking_change_found=false" >> $GITHUB_OUTPUT
+          echo "breaking_change_found=false" >> "$GITHUB_OUTPUT"
         fi
     # Step 2: Conditionally fail the job for GA APIs.
     # This step runs only if a breaking change was found in the previous step.
@@ -123,21 +116,25 @@ jobs:
     - name: Conditionally fail for GA APIs
       id: ga_check # Add an ID to this step to check its outcome later.
       if: steps.detect.outputs.breaking_change_found == 'true'
-      env:
-        CHANGED: ${{ matrix.changed }}
       run: |
-        if [[ "$CHANGED" =~ apiv[0-9]+$ ]]; then
-          echo "Error: Breaking change detected in GA API: $CHANGED"
+        # Fail if the module path itself indicates that it is GA (e.g. "compute/apiv1").
+        # Some modules (e.g. "shopping") contain multiple API versions below the module root.
+        # For these, we also check diff.txt for GA package paths (e.g. apiv1/) to
+        # catch breaking changes in GA packages nested within a non-versioned module.
+        if [[ "${MATRIX_CHANGED}" =~ apiv[0-9]+$ ]] || grep -q -E "(/|^)apiv[0-9]+(/|:)" "${MATRIX_CHANGED}/diff.txt"; then
+          echo "Error: Breaking change detected in GA API: ${MATRIX_CHANGED}"
           exit 1
         fi
         echo "Breaking change in non-GA API, proceeding."
+      env:
+        MATRIX_CHANGED: ${{ matrix.changed }}
     # Step 3: Add a "breaking change" label.
     # This step runs if a breaking change was found, regardless of whether the
     # API is GA or not. This ensures that all breaking changes are labeled for
     # review, even if they don't block the PR.
     - name: Add breaking change label
       if: ${{ steps.detect.outputs.breaking_change_found == 'true' && !github.event.pull_request.head.repo.fork }}
-      uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+      uses: actions/github-script@v9
       with:
         script: |
           github.rest.issues.addLabels({
@@ -153,14 +150,12 @@ jobs:
     # the failed presubmit check is the primary signal.
     - name: Post breaking change details as a comment
       if: ${{ steps.ga_check.outcome == 'success' && !github.event.pull_request.head.repo.fork }}
-      uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
-      env:
-        CHANGED: ${{ matrix.changed }}
+      uses: actions/github-script@v9
       with:
         script: |
           const fs = require('fs');
-          const diff = fs.readFileSync(`${process.env.CHANGED}/diff.txt`, 'utf8');
-          const moduleName = process.env.CHANGED;
+          const diff = fs.readFileSync('${{ matrix.changed }}/diff.txt', 'utf8');
+          const moduleName = '${{ matrix.changed }}';
           const commentHeader = `### ⚠️ Breaking change detected in pre-GA module: \`${moduleName}\``;
           const body = `${commentHeader}\n\nThe apidiff check has detected one or more breaking changes in this module for pre-GA APIs.\n\nPre-GA breaking changes do not block the pull request, but are flagged here for review.\n\nFor any pre-GA breaking change that needs investigation, open a new issue containing a link to this comment, then you may proceed with reviewing and merging this PR.\n\n\`\`\`\n${diff}\n\`\`\``;
           const { data: comments } = await github.rest.issues.listComments({

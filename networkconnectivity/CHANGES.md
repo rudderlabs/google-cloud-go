@@ -1,5 +1,27 @@
 # Changes
 
+## [1.26.0](https://github.com/googleapis/google-cloud-go/releases/tag/networkconnectivity%2Fv1.26.0) (2026-05-07)
+
+## [1.25.0](https://github.com/googleapis/google-cloud-go/releases/tag/networkconnectivity%2Fv1.25.0) (2026-04-30)
+
+## [1.24.0](https://github.com/googleapis/google-cloud-go/releases/tag/networkconnectivity%2Fv1.24.0) (2026-04-13)
+
+## [1.23.0](https://github.com/googleapis/google-cloud-go/releases/tag/networkconnectivity%2Fv1.23.0) (2026-04-09)
+
+## [1.22.0](https://github.com/googleapis/google-cloud-go/releases/tag/networkconnectivity%2Fv1.22.0) (2026-04-02)
+
+## [1.21.0](https://github.com/googleapis/google-cloud-go/releases/tag/networkconnectivity%2Fv1.21.0) (2026-03-12)
+
+### Features
+
+* add new clients (#14019) ([c5336ad](https://github.com/googleapis/google-cloud-go/commit/c5336ad27811a0b0f7eab486bd80d74c48b91aed))
+
+## [1.20.0](https://github.com/googleapis/google-cloud-go/releases/tag/networkconnectivity%2Fv1.20.0) (2026-01-22)
+
+### Features
+
+* Added OUTPUT_ONLY annotations to create_time and update_time in InternalRange to reflect existing service behavior ([8ddeca5](https://github.com/googleapis/google-cloud-go/commit/8ddeca50844ba7c19cdbab149ff5b25718dd825c))
+
 ## [1.19.1](https://github.com/googleapis/google-cloud-go/compare/networkconnectivity/v1.19.0...networkconnectivity/v1.19.1) (2025-09-18)
 
 

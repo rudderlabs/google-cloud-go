@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 // Package compute is an auto-generated package for the
 // Google Compute Engine API.
+//
+//	NOTE: This package is in beta. It is not stable, and may be subject to changes.
 //
 // # General documentation
 //
@@ -40,7 +42,7 @@
 //	// - It may require correct/in-range values for request initialization.
 //	// - It may require specifying regional endpoints when creating the service client as shown in:
 //	//   https://pkg.go.dev/cloud.google.com/go#hdr-Client_Options
-//	c, err := compute.NewAcceleratorTypesClient(ctx)
+//	c, err := compute.NewAcceleratorTypesRESTClient(ctx)
 //	if err != nil {
 //		// TODO: Handle error.
 //	}
@@ -79,7 +81,7 @@
 //
 // # Use of Context
 //
-// The ctx passed to NewAcceleratorTypesClient is used for authentication requests and
+// The ctx passed to NewAcceleratorTypesRESTClient is used for authentication requests and
 // for creating the underlying connection, but is not used for subsequent calls.
 // Individual methods on the client use the ctx given to them.
 //

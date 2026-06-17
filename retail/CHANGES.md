@@ -1,5 +1,22 @@
 # Changes
 
+## [1.31.0](https://github.com/googleapis/google-cloud-go/releases/tag/retail%2Fv1.31.0) (2026-05-07)
+
+## [1.30.0](https://github.com/googleapis/google-cloud-go/releases/tag/retail%2Fv1.30.0) (2026-04-30)
+
+## [1.29.0](https://github.com/googleapis/google-cloud-go/releases/tag/retail%2Fv1.29.0) (2026-04-13)
+
+## [1.28.0](https://github.com/googleapis/google-cloud-go/releases/tag/retail%2Fv1.28.0) (2026-04-09)
+
+## [1.27.0](https://github.com/googleapis/google-cloud-go/releases/tag/retail%2Fv1.27.0) (2026-04-02)
+
+## [1.26.0](https://github.com/googleapis/google-cloud-go/releases/tag/retail%2Fv1.26.0) (2026-01-29)
+
+### Features
+
+* add a model_scores field in SearchResponse.results to expose model quality signals ([d8ea738](https://github.com/googleapis/google-cloud-go/commit/d8ea738a6e8f0603593d686a44331e7e0a572c27))
+* add a user_attributes field in SearchRequest that can be used for personalization ([d8ea738](https://github.com/googleapis/google-cloud-go/commit/d8ea738a6e8f0603593d686a44331e7e0a572c27))
+
 ## [1.25.1](https://github.com/googleapis/google-cloud-go/compare/retail/v1.25.0...retail/v1.25.1) (2025-09-22)
 
 

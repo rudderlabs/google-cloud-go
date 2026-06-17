@@ -1,5 +1,5 @@
 # Hand-maintained configuration for libraries.
-
+release_only_mode: true
 global_files_allowlist:
  # Paths (currently just one) that need to modified during configure
  - path: "internal/generated/snippets/go.mod"
@@ -18,6 +18,8 @@ global_files_allowlist:
 # libraries have "release_blocked: true" so that releases are
 # explicitly initiated
 libraries:
+  - id: "agentplatform"
+    release_blocked: true
   - id: "auth"
     release_blocked: true
   - id: "auth/oauth2adapt"
@@ -32,15 +34,7 @@ libraries:
     release_blocked: true
   - id: "datastore"
     release_blocked: true
-  - id: "errorreporting"
-    release_blocked: true
   - id: "firestore"
-    release_blocked: true
-  - id: "logging"
-    release_blocked: true
-  - id: "longrunning"
-    release_blocked: true
-  - id: "profiler"
     release_blocked: true
   - id: "pubsub"
     release_blocked: true

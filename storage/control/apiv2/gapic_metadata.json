@@ -30,6 +30,11 @@
                 "DeleteFolder"
               ]
             },
+            "DeleteFolderRecursive": {
+              "methods": [
+                "DeleteFolderRecursive"
+              ]
+            },
             "DeleteManagedFolder": {
               "methods": [
                 "DeleteManagedFolder"
@@ -58,6 +63,16 @@
             "GetIamPolicy": {
               "methods": [
                 "GetIamPolicy"
+              ]
+            },
+            "GetIntelligenceFinding": {
+              "methods": [
+                "GetIntelligenceFinding"
+              ]
+            },
+            "GetIntelligenceFindingRevision": {
+              "methods": [
+                "GetIntelligenceFindingRevision"
               ]
             },
             "GetManagedFolder": {
@@ -90,6 +105,16 @@
                 "ListFolders"
               ]
             },
+            "ListIntelligenceFindingRevisions": {
+              "methods": [
+                "ListIntelligenceFindingRevisions"
+              ]
+            },
+            "ListIntelligenceFindings": {
+              "methods": [
+                "ListIntelligenceFindings"
+              ]
+            },
             "ListManagedFolders": {
               "methods": [
                 "ListManagedFolders"
@@ -113,6 +138,11 @@
             "SetIamPolicy": {
               "methods": [
                 "SetIamPolicy"
+              ]
+            },
+            "SummarizeIntelligenceFindings": {
+              "methods": [
+                "SummarizeIntelligenceFindings"
               ]
             },
             "TestIamPermissions": {
@@ -165,6 +195,11 @@
                 "DeleteFolder"
               ]
             },
+            "DeleteFolderRecursive": {
+              "methods": [
+                "DeleteFolderRecursive"
+              ]
+            },
             "DeleteManagedFolder": {
               "methods": [
                 "DeleteManagedFolder"
@@ -193,6 +228,16 @@
             "GetIamPolicy": {
               "methods": [
                 "GetIamPolicy"
+              ]
+            },
+            "GetIntelligenceFinding": {
+              "methods": [
+                "GetIntelligenceFinding"
+              ]
+            },
+            "GetIntelligenceFindingRevision": {
+              "methods": [
+                "GetIntelligenceFindingRevision"
               ]
             },
             "GetManagedFolder": {
@@ -225,6 +270,16 @@
                 "ListFolders"
               ]
             },
+            "ListIntelligenceFindingRevisions": {
+              "methods": [
+                "ListIntelligenceFindingRevisions"
+              ]
+            },
+            "ListIntelligenceFindings": {
+              "methods": [
+                "ListIntelligenceFindings"
+              ]
+            },
             "ListManagedFolders": {
               "methods": [
                 "ListManagedFolders"
@@ -248,6 +303,11 @@
             "SetIamPolicy": {
               "methods": [
                 "SetIamPolicy"
+              ]
+            },
+            "SummarizeIntelligenceFindings": {
+              "methods": [
+                "SummarizeIntelligenceFindings"
               ]
             },
             "TestIamPermissions": {

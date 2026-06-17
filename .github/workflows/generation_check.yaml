@@ -1,0 +1,66 @@
+---
+name: generation-check
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  # Allows manual triggering for debugging purpose.
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+jobs:
+  regeneration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v4
+        id: changes
+        with:
+          filters: |
+            librarian:
+              - 'librarian.yaml'
+      # Version of librarian is pulled from librarian.yaml,
+      # main corresponds to the action's source definition.
+      - uses: googleapis/librarian@main
+        if: steps.changes.outputs.librarian == 'true' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        with:
+          protoc-version: '33.2'
+          protoc-checksum: '8c0a8577311720cc83488f813aeb5046d69cb9824cbf39cb7447e0c5132d677952d5bb7c1130d9df381835eee7352828878d409873ebb407d7a4649ea2a4aee5'
+      - name: Install tools
+        if: steps.changes.outputs.librarian == 'true' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        run: librarian install
+      - name: Regenerate
+        if: steps.changes.outputs.librarian == 'true' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        run: |
+          librarian generate --all
+          if [ -n "$(git status --porcelain)" ]; then
+            git status
+            echo "Regeneration failed. Please run 'librarian generate --all' to update the generated files."
+            exit 1
+          fi
+      - name: Create issue on diff
+        if: failure() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            TITLE="Regeneration check found diff"
+            RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            DIFF_STAT=$(git status --porcelain)
+            BODY="The post-submit [regeneration check]($RUN_URL) found a diff.
+
+            Diff summary:
+            \`\`\`
+            $DIFF_STAT
+            \`\`\`"
+
+            EXISTING_ISSUE=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number')
+            if [ -z "$EXISTING_ISSUE" ]; then
+              gh issue create --title "$TITLE" --body "$BODY"
+            else
+              echo "Issue #$EXISTING_ISSUE already exists, adding a comment."
+              gh issue comment "$EXISTING_ISSUE" --body "Another failure with diff occurred: $RUN_URL"
+            fi
+          fi
