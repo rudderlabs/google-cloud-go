@@ -10,9 +10,14 @@ jobs:
   tidy-check:
     runs-on: ubuntu-latest
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
       - name: Checkout
-        uses: actions/checkout@v6
-      - uses: dorny/paths-filter@v4
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4.0.1
         id: changes
         with:
           filters: |
@@ -20,7 +25,7 @@ jobs:
               - 'librarian.yaml'
       # Version of librarian is pulled from librarian.yaml,
       # main corresponds to the action's source definition.
-      - uses: googleapis/librarian@main
+      - uses: googleapis/librarian@00e5e0d8d0ff8307a861a8f5e08f8b896a1b8c50 # main
 
       - name: Run librarian tidy
         if: steps.changes.outputs.librarian == 'true'
